@@ -40,6 +40,7 @@ class LoginController extends Controller
      */
     public function store(Request $request)
     {
+        return 1;
         return $this->loginService->adminLogin($request);
     }
 
