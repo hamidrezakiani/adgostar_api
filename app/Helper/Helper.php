@@ -9,5 +9,5 @@ class Helper {
     $fp = fopen(url('log.json'), 'w');
     fwrite($fp, json_encode($data));
     fclose($fp);
-   };
-};
+   }
+}
