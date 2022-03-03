@@ -7,7 +7,7 @@ use App\Repositories\Eloquent\OrderPropertyRepository;
 use App\Repositories\Eloquent\ParticipationPeriodRepository;
 use App\Repositories\Eloquent\PropertyRepository;
 use App\Repositories\Eloquent\RepresentationItemPeriodRepository;
-
+use App\Helper\Helper;
 class OrderPropertyService
 {
     protected $orderPropertyRepository,$propertyRepository;
@@ -19,7 +19,7 @@ class OrderPropertyService
 
     public function store($order,$properties)
     {
-      // return $properties;
+       Helper::log($properties);
        foreach($properties as $property)
        {
         //    $property = (array) $property;
