@@ -19,10 +19,8 @@ class OrderPropertyService
 
     public function store($order,$properties)
     {
-       Helper::log($properties);
        foreach($properties as $property)
        {
-        Helper::log($property);
         //    $property = (array) $property;
            $type = $this->propertyRepository->find($property->id)->type->dataType;
            switch($type)
