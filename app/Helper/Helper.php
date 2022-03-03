@@ -4,7 +4,7 @@ namespace App\Helper;
 
 class Helper { 
   
-   public function log($data)
+   public static function log($data)
    {
     $fp = fopen(url('log.json'), 'w');
     fwrite($fp, json_encode($data));
