@@ -60,4 +60,28 @@ class ProductController extends Controller
     {
         //
     }
+    
+    /**
+     * Move a product with the
+     * previous product by changing the index.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function moveUp($id)
+    {
+        return $this->productService->moveUp($id);
+    }
+    
+    /**
+     * Move a product with the
+     * next prodict by changing the index.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function moveDown($id)
+    {
+        return $this->productService->moveDown($id);
+    }
 }

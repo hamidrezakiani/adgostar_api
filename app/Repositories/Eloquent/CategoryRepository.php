@@ -16,12 +16,18 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
 
     public function subCats($id) :?Collection
     {
-        return $this->model->find($id)->subCats;
+        return $this->model->find($id)->subCats()->orderBy('tab_index','ASC')->get();
+    }
+    
+    public function brothers($id) :?Collection
+    {
+        $category = $this->model->find($id);
+        return $this->model->where('parent_id',$category->parent_id)->orderBy('tab_index','ASC')->get();
     }
 
     public function parents() :?Collection
     {
-        return $this->model->where('parent_id',NULL)->get();
+        return $this->model->where('parent_id',NULL)->orderBy('tab_index','ASC')->get();
     }
 
     public function showParents($flag = 'all'):?Collection
@@ -69,6 +75,7 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
     {
         return $this->model->where('count_subCat',0)->get();
     }
+    
 
     public function allowed($id):?Collection
     {
@@ -97,5 +104,21 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
            return $cat;
         });
         return $allowed;
+    }
+    
+    public function previous($id)
+    {
+      $category = $this->model->find($id);
+      return $this->model->where('parent_id',$category->parent_id)
+        ->where('tab_index','<',$category->tab_index)
+          ->orderBy('tab_index','DESC')->first();
+    }
+    
+    public function next($id)
+    {
+      $category = $this->model->find($id);
+      return $this->model->where('parent_id',$category->parent_id)
+        ->where('tab_index','>',$category->tab_index)
+          ->orderBy('tab_index','ASC')->first();
     }
 }

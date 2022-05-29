@@ -12,7 +12,7 @@ class ItemController extends Controller
 {
 
     protected $itemService;
-
+    
     public function __construct(ItemService $itemService)
     {
         $this->itemService = $itemService;
@@ -59,5 +59,29 @@ class ItemController extends Controller
     public function destroy($id)
     {
         //
+    }
+    
+    /**
+     * Move a item with the
+     * previous item by changing the index.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function moveUp($id)
+    {
+        return $this->itemService->moveUp($id);
+    }
+    
+    /**
+     * Move a item with the
+     * next item by changing the index.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function moveDown($id)
+    {
+        return $this->itemService->moveDown($id);
     }
 }

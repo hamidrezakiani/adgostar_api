@@ -55,4 +55,19 @@ class Admin extends Authenticatable
     {
         $this->attributes['password'] = Hash::make($value);
     }
+    
+    public function executer()
+    {
+        return $this->belongsTo(Executer::class,'phone','phone');
+    }
+    
+    public function agent()
+    {
+        return $this->belongsTo(Representation::class,'phone','phone');
+    }
+    
+    public function user()
+    {
+        return $this->belongsTo(User::class,'phone','phone');
+    }
 }

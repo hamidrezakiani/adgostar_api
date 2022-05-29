@@ -20,7 +20,10 @@ class CreateItemsTable extends Migration
             ->on('products')->onDelete('cascade');
             $table->string('name');
             $table->string('alias');
+            $table->string('turkish_name');
+            $table->string('turkish_alias')
             $table->enum('viewable',['YES','NO'])->default('NO');
+            $table->unsignedInteger('tab_index')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

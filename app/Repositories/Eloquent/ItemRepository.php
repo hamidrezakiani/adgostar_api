@@ -30,7 +30,7 @@ class ItemRepository extends BaseRepository implements ItemRepositoryInterface
 
     public function getByProduct($product_id) :?Collection
     {
-        return $this->model->where('product_id',$product_id)->get();
+        return $this->model->where('product_id',$product_id)->orderBy('tab_index','ASC')->get();
     }
 
     public function getExecuter()
@@ -41,6 +41,22 @@ class ItemRepository extends BaseRepository implements ItemRepositoryInterface
     public function getProduct()
     {
         return $this->item->product;
+    }
+    
+    public function previous($id)
+    {
+      $item = $this->model->find($id);
+      return $this->model->where('product_id',$item->product_id)
+        ->where('tab_index','<',$item->tab_index)
+          ->orderBy('tab_index','DESC')->first();
+    }
+    
+    public function next($id)
+    {
+      $item = $this->model->find($id);
+      return $this->model->where('product_id',$item->product_id)
+        ->where('tab_index','>',$item->tab_index)
+          ->orderBy('tab_index','ASC')->first();
     }
 
     public function matchPeriod($count):?ItemPeriod

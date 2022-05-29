@@ -29,7 +29,7 @@ class UpdateItemRequest extends FormRequest
         return [
             'product_id' => 'exists:products,id',
             'name' => 'min:2|max:100',
-            'alias' => 'required|min:2|max:100',
+            'alias' => 'min:2|max:100',
             'viewable' => Rule::in(['YES', 'NO']),
         ];
     }

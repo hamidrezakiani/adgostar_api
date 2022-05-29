@@ -19,7 +19,11 @@ class CreateProductsTable extends Migration
             $table->foreign('category_id')->references('id')
             ->on('categories')->onDelete('cascade');
             $table->string('name');
+            $table->string('label');
+            $table->string('turkish_name');
+            $table->string('turkish_label');
             $table->enum('viewable',['YES','NO'])->default('NO');
+            $table->unsignedInteger('tab_index')->nullable();
             $table->enum('periodType',['SINGLE','MULTIPLE'])->default('SINGLE');
             $table->unsignedInteger('count_item')->default(0);
             $table->unsignedInteger('count_property')->default(0);

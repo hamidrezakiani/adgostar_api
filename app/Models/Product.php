@@ -10,8 +10,16 @@ class Product extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $fillable = ['category_id','name','viewable','count_item','count_property'];
-
+    protected $fillable = ['category_id','name','turkish_name','label','turkish_label','viewable','count_item','count_property','tab_index'];
+    
+    protected static function boot(){
+        parent::boot();
+        static::creating(function($model){
+          $last_brother = Product::where('category_id',$model->category_id)->orderBy('tab_index','DESC')->first();
+          $model->tab_index = 1 + ($last_brother?$last_brother->tab_index:-1);
+        });
+    }
+    
     public function category()
     {
         return $this->belongsTo(Category::class);
@@ -38,7 +46,7 @@ class Product extends Model
 
     public function items()
     {
-        return $this->hasMany(Item::class);
+        return $this->hasMany(Item::class)->orderBy('tab_index','ASC');
     }
 
     public function Properties()

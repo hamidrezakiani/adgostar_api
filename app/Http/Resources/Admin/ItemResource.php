@@ -2,9 +2,9 @@
 
 namespace App\Http\Resources\Admin;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class ItemResource extends ResourceCollection
+class ItemResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,10 +14,15 @@ class ItemResource extends ResourceCollection
      */
     public function toArray($request)
     {
-        $response['items'] = $this->collection->map(function ($item) {
-            $item->productName = $item->product->name;
-            return $item;
-        });
-        return $response;
+        return [
+          'id' => $this->id,
+          'product_id' => $this->product_id,
+          'name' => $this->name,
+          'alias' => $this->alias,
+          'turkish_name' => $this->turkish_name,
+          'turkish_alias' => $this->turkish_alias,
+          'viewable' => $this->viewable,
+          'tab_index' => $this->tab_index,
+        ];
     }
 }

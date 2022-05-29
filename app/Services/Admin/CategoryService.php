@@ -5,6 +5,7 @@ use App\Events\CategoryCreatedEvent;
 use App\Events\SetCategoryParentEvent;
 use App\Events\UnsetCategoryParentEvent;
 use App\Http\Resources\Admin\CategoryResource;
+use App\Http\Resources\Admin\TreeResource;
 use App\Http\Resources\Admin\CategoryRouteResource;
 use App\Lib\ResponseTemplate;
 use App\Models\Category;
@@ -31,6 +32,11 @@ class CategoryService extends ResponseTemplate
             $categories = $this->categoryRepository->subCats($search);
             $this->setData(new CategoryResource($categories));
         }
+        elseif($flag == 'brothers')
+        {
+            $categories = $this->categoryRepository->brothers($search);
+            $this->setData(new TreeResource($categories));
+        }
         elseif($flag == 'all')
         {
             $categories = $this->categoryRepository->all();
@@ -52,6 +58,11 @@ class CategoryService extends ResponseTemplate
            $pageRoute = $this->routePage($category);
            $this->setData($pageRoute);
         }
+        elseif($flag == 'tree')
+        {
+          $categories = $this->categoryRepository->parents();
+          $this->setData(new TreeResource($categories));
+        }
         else
         {
             $this->setStatus(403);
@@ -66,16 +77,16 @@ class CategoryService extends ResponseTemplate
        $category->update($request->all());
        $category = $this->categoryRepository->find($id);
        event(new SetCategoryParentEvent($category));
-       $this->setStatus(204);
-       return $this->response();
+       $this->setStatus(200);
+       return $this->index('brothers',$category->id);
     }
 
     public function store($request)
     {
        $category =  $this->categoryRepository->create($request->all());
        event(new CategoryCreatedEvent($category));
-       $this->setStatus(204);
-       return $this->response();
+       $this->setStatus(200);
+       return $this->index('brothers',$category->id);
     }
 
     public function routePage($parent)
@@ -84,5 +95,31 @@ class CategoryService extends ResponseTemplate
           return array_merge($this->routePage($parent->parent),[['id' => $parent->id,'name'=>$parent->name]]);
         else
           return [];
+    }
+    
+    public function moveUp($id)
+    {
+      $category = $this->categoryRepository->find($id);
+      $previousCategory = $this->categoryRepository->previous($id);
+      if($previousCategory)
+      {
+        $new_tab_index = $previousCategory->tab_index;
+        $previousCategory->update(['tab_index' => $category->tab_index]);
+        $category->update(['tab_index' => $new_tab_index]);
+      }
+      return $this->index('brothers',$category->id);
+    }
+    
+    public function moveDown($id)
+    {
+      $category = $this->categoryRepository->find($id);
+      $nextCategory = $this->categoryRepository->next($id);
+      if($nextCategory)
+      {
+        $new_tab_index = $nextCategory->tab_index;
+        $nextCategory->update(['tab_index' => $category->tab_index]);
+        $category->update(['tab_index' => $new_tab_index]);
+      }
+      return $this->index('brothers',$category->id);
     }
 }

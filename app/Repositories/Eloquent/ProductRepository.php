@@ -31,9 +31,25 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         }
 
     }
+    
+    public function previous($id)
+    {
+      $product = $this->model->find($id);
+      return $this->model->where('category_id',$product->category_id)
+        ->where('tab_index','<',$product->tab_index)
+          ->orderBy('tab_index','DESC')->first();
+    }
+    
+    public function next($id)
+    {
+      $product = $this->model->find($id);
+      return $this->model->where('category_id',$product->category_id)
+        ->where('tab_index','>',$product->tab_index)
+          ->orderBy('tab_index','ASC')->first();
+    }
 
     public function getByCategory($category_id) :?Collection
     {
-        return $this->model->where('category_id',$category_id)->get();
+        return $this->model->where('category_id',$category_id)->orderBy('tab_index','ASC')->get();
     }
 }

@@ -51,6 +51,12 @@ class Executer extends Authenticatable
             $model->api_token = Str::random(60);
         });
     }
+    
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = Hash::make($value);
+    }
+    
     public function account()
     {
         return $this->belongsTo(Account::class);

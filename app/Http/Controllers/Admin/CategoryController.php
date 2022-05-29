@@ -44,7 +44,7 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        $this->categoryService->store($request);
+        return $this->categoryService->store($request);
     }
 
     /**
@@ -64,7 +64,6 @@ class CategoryController extends Controller
                 return $subQuery->where('id',$id);
             });
          })->get();
-         dd($c);
     }
 
     /**
@@ -99,5 +98,29 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         //
+    }
+    
+    /**
+     * Move a category with the
+     * previous category by changing the index.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function moveUp($id)
+    {
+        return $this->categoryService->moveUp($id);
+    }
+    
+    /**
+     * Move a category with the
+     * next category by changing the index.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function moveDown($id)
+    {
+        return $this->categoryService->moveDown($id);
     }
 }

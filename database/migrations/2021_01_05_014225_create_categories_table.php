@@ -24,7 +24,10 @@ class CreateCategoriesTable extends Migration
             $table->string('code');
             $table->string('name');
             $table->string('label');
+            $table->string('turkish_name');
+            $table->string('turkish_label');
             $table->enum('show',['YES','NO'])->default('NO');
+            $table->unsignedInteger('tab_index')->nullable();
             $table->enum('trash',['YES','NO'])->default('NO');
             $table->unsignedInteger('count_product')->default(0);
             $table->unsignedInteger('count_subCat')->default(0);

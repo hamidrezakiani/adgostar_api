@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Executer\ExecuterController;
 use App\Http\Controllers\Representation\User\UserController;
+use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,5 +23,9 @@ Route::group(['middleware' => 'auth:user'], function () {
 
 Route::group(['middleware' => 'auth:executer'], function () {
     Route::resource('executer', ExecuterController::class);
+});
+
+Route::group(['middleware' => 'auth:admin'], function () {
+    Route::resource('admin', AdminController::class);
 });
 

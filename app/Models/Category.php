@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Category extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $fillable = ['parent_id','showParent_id','name','label','show','count_subCat', 'count_showSubCat', 'count_product'];
+    protected $fillable = ['parent_id','showParent_id','name','turkish_name','label','turkish_label','show','tab_index','count_subCat', 'count_showSubCat', 'count_product'];
     // protected $appends = ['count_allProducts'];
     protected static function boot(){
         parent::boot();
@@ -20,6 +20,11 @@ class Category extends Model
             $code = Category::find($model->parent_id)->code.':'.$model->parent_id;
             $model->code = $code;
             }
+        });
+        
+        static::creating(function($model){
+          $last_brother = Category::where('parent_id',$model->parent_id)->orderBy('tab_index','DESC')->first();
+          $model->tab_index = 1 + ($last_brother?$last_brother->tab_index:-1);
         });
     }
 
@@ -102,7 +107,7 @@ class Category extends Model
 
     public function subCats()
     {
-        return $this->hasMany(Category::class,'parent_id');
+        return $this->hasMany(Category::class,'parent_id')->orderBy('tab_index','ASC');
     }
 
     public function showSubCats()
@@ -122,6 +127,6 @@ class Category extends Model
 
     public function products()
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(Product::class)->orderBy('tab_index','ASC');
     }
 }

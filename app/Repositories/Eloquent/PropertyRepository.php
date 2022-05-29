@@ -17,4 +17,5 @@ class PropertyRepository extends BaseRepository implements PropertyRepositoryInt
     {
         return $this->model->where('product_id',$product_id)->get();
     }
+    
 }
