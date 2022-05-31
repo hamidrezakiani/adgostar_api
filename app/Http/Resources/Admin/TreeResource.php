@@ -48,6 +48,7 @@ class TreeResource extends ResourceCollection
             'id' => $category->id,
             'parent_id' => $category->parent_id,
             'name' => $category->name,
+            'label' => $category->label,
             'turkish_name' => $category->turkish_name,
             'turkish_label' => $category->turkish_label,
             'count_subCat' => $category->count_subCat,
