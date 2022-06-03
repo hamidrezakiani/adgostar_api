@@ -1,7 +1,7 @@
 <?php
 namespace App\Services\Admin;
 
-use App\Http\Resources\Admin\PropertyResource;
+use App\Http\Resources\Admin\PropertyCollection;
 use App\Lib\ResponseTemplate;
 use App\Models\PropertyType;
 use App\Repositories\Eloquent\PropertyRepository;
@@ -23,7 +23,7 @@ class PropertyService extends ResponseTemplate
         if($flag == 'productProperties')
         {
             $properties = $this->propertyRepository->getByProduct($search);
-            $this->setData(new PropertyResource($properties));
+            $this->setData(new PropertyCollection($properties));
         }
         elseif($flag == 'all')
         {
@@ -50,17 +50,16 @@ class PropertyService extends ResponseTemplate
                 ->update(['count_property' => DB::raw('count_property+1')]);
         }
        $this->propertyRepository->update($request->all(),$id);
-       $this->setStatus(204);
-       return $this->response();
+       $property = $this->propertyRepository->find($id);
+       return $this->index('productProperties',$property->product_id);
     }
 
     public function store($request)
     {
 
-       $this->propertyRepository->create($request->all());
+      $property = $this->propertyRepository->create($request->all());
        $this->productRepository->find($request->product_id)
             ->update(['count_property' => DB::raw('count_property+1')]);
-       $this->setStatus(204);
-       return $this->response();
+      return $this->index('productProperties',$property->product_id);
     }
 }

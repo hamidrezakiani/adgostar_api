@@ -10,7 +10,7 @@ class PropertyType extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $fillable = ['name','logo','type'];
+    protected $fillable = ['name','sizeUnit','logo','type'];
 
     public function properties()
     {

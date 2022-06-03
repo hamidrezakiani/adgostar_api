@@ -22,7 +22,8 @@ class CreatePropertiesTable extends Migration
             $table->foreign('property_type_id')->references('id')
             ->on('property_types')->onDelete('cascade');
             $table->string('label')->nullable();
-            $table->integer('size')->nullable();
+            $table->integer('minSize')->nullable();
+            $table->integer('maxSize')->nullable();
             $table->string('placeholder')->nullable();
             $table->string('tooltip')->nullable();
             $table->enum('required',['YES','NO'])->default('NO');

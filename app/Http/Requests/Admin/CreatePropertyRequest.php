@@ -30,7 +30,8 @@ class CreatePropertyRequest extends FormRequest
             'product_id' => 'required|exists:products,id',
             'property_type_id' => 'required|exists:property_types,id',
             'label' => 'required|min:2|max:100',
-            'size' => 'required',
+            'minSize' => 'integer|required',
+            'maxSize' => 'integer|required',
             'placeholder' => 'min:2|max:100',
             'tooltip' => 'min:2|max:100',
             'required' => Rule::in(['YES', 'NO']),
@@ -40,7 +41,8 @@ class CreatePropertyRequest extends FormRequest
     {
         return [
             'label' => 'متن برچسب',
-            'size' => 'حداکثر سایز',
+            'maxSize' => 'حداکثر سایز',
+            'minSize' => 'حداقل سایز',
             'property_type_id' => 'نوع خصوصیات',
             'product_id' => 'محصول',
             'placeholder' => 'متن راهنما',

@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Admin;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Models\PropertyType;
 
 class ProductResource extends JsonResource
 {
@@ -21,8 +22,10 @@ class ProductResource extends JsonResource
           'turkish_name' => $this->turkish_name,
           'turkish_label' => $this->turkish_label,
           'viewable' => $this->viewable,
-          'items' => new ItemCollection($this->items),
           'tab_index' => $this->tab_index,
+          'items' => new ItemCollection($this->items),
+          'properties' => new PropertyCollection($this->properties),
+          'propertyTypes' => PropertyType::all(),
         ];
     }
 }

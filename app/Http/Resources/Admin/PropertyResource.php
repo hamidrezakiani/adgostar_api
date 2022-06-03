@@ -2,9 +2,9 @@
 
 namespace App\Http\Resources\Admin;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class PropertyResource extends ResourceCollection
+class PropertyResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,11 +14,21 @@ class PropertyResource extends ResourceCollection
      */
     public function toArray($request)
     {
-        $response['properties'] = $this->collection->map(function ($property) {
-            $property->productName = $property->product->name;
-            $property->typeName = $property->type->name;
-            return $property;
-        });
-        return $response;
+        return [
+          'id' => $this->id,
+          'type_id' => $this->type->id,
+          'product_id' => $this->product_id,
+          'label' => $this->label,
+          'turkish_label' => $this->turkish_label,
+          'maxSize' => $this->maxSize,
+          'minSize' => $this->minSize,
+          'sizeUnit' => $this->type->sizeUnit,
+          'typeName' => $this->type->name,
+          'placeholder' => $this->placeholder,
+          'turkish_placeholder' => $this->turkish_placeholder,
+          'tooltip' => $this->tooltip,
+          'turkish_tooltip' => $this->turkish_tooltip,
+          'required' => $this->required,
+        ];
     }
 }

@@ -10,7 +10,7 @@ class Property extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $fillable = ['product_id','property_type_id','label','size','placeholder','tooltip','required'];
+    protected $fillable = ['product_id','property_type_id','label','turkish_label','minSize','maxSize','placeholder','turkish_placeholder','tooltip','turkish_tooltip','required'];
 
     public function product()
     {
