@@ -58,6 +58,6 @@ class PropertyController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $this->propertyService->delete($id);
     }
 }

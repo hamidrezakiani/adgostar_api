@@ -62,4 +62,14 @@ class PropertyService extends ResponseTemplate
             ->update(['count_property' => DB::raw('count_property+1')]);
       return $this->index('productProperties',$property->product_id);
     }
+    
+    public function delete($id)
+    {
+
+      $property = $this->propertyRepository->find($id);
+       $this->productRepository->find($property->product_id)
+            ->update(['count_property' => DB::raw('count_property-1')]);
+      $property->delete();
+      return $this->index('productProperties',$property->product_id);
+    }
 }

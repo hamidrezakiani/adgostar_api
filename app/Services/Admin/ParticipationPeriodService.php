@@ -1,7 +1,7 @@
 <?php
 namespace App\Services\Admin;
 
-use App\Http\Resources\Admin\ParticipationPeriodResource;
+use App\Http\Resources\Admin\ParticipationPeriodCollection;
 use App\Lib\ResponseTemplate;
 use App\Repositories\Eloquent\ItemRepository;
 use App\Repositories\Eloquent\ParticipationPeriodRepository;
@@ -22,12 +22,12 @@ class ParticipationPeriodService extends ResponseTemplate
         if($flag == 'participationPeriods')
         {
             $periods = $this->participationPeriodRepository->getByParticipationId($search);
-            $this->setData(new ParticipationPeriodResource($periods));
+            $this->setData(new ParticipationPeriodCollection($periods));
         }
         elseif($flag == 'all')
         {
             $periods = $this->participationPeriodRepository->all();
-            $this->setData(new ParticipationPeriodResource($periods));
+            $this->setData(new ParticipationPeriodCollection($periods));
         }
         elseif($flag == 'itemParticipationPeriods')
         {
@@ -35,7 +35,7 @@ class ParticipationPeriodService extends ResponseTemplate
            if($participation)
            {
                 $periods = $this->participationPeriodRepository->getByParticipationId($participation->id);
-                $this->setData(new ParticipationPeriodResource($periods));
+                $this->setData(new ParticipationPeriodCollection($periods));
            }
            else
            {

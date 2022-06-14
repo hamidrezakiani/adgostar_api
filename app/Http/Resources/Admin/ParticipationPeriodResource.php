@@ -2,9 +2,9 @@
 
 namespace App\Http\Resources\Admin;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class ParticipationPeriodResource extends ResourceCollection
+class ParticipationPeriodResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,11 +14,12 @@ class ParticipationPeriodResource extends ResourceCollection
      */
     public function toArray($request)
     {
-        $response['periods'] = $this->collection->map(function($period){
-            if($period->end >= 1000000000000)
-              $period->end = 'بی نهایت';
-            return $period;
-         });
-         return $response;
+      return [
+        'id' => $this->id,
+        'participation_id' => $this->participation_id,
+        'start' => $this->start,
+        'end' => $this->end,
+        'cost' => $this->cost,
+      ];
     }
 }

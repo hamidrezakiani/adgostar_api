@@ -22,10 +22,20 @@ class ParticipationRepository extends BaseRepository implements ParticipationRep
         else
           return false;
     }
-
+    
     public function getByItemId($item_id):?Participation
     {
        return $this->model->where('item_id',$item_id)->first();
+    }
+    
+    public function getByProductId($product_id):?Collection
+    {
+       return $this->model->where('product_id',$product_id)->get();
+    }
+    
+    public function unsyncItem($item_id)
+    {
+      return $this->model->where('item_id',$item_id)->update(['item_id' => NULL]);
     }
 
 }

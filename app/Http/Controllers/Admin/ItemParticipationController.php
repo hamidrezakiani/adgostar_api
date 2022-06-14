@@ -3,26 +3,30 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Services\Admin\ParticipationService;
 use Illuminate\Http\Request;
+use App\Services\Admin\ItemParticipationService;
+use App\Services\Admin\ParticipationService;
+use App\Services\Admin\PropertyService;
 
-class ParticipationController extends Controller
+class ItemParticipationController extends Controller
 {
-
     protected $participationService;
+    protected $itemParticipationService;
 
     public function __construct(ParticipationService $participationService)
     {
         $this->participationService = $participationService;
+        $this->itemParticipationService = new ItemParticipationService();
     }
+    
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        return $this->participationService->index($request->flag,$request->search);
+        //
     }
 
     /**
@@ -77,7 +81,8 @@ class ParticipationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return $this->participationService->update($request,$id);
+       $this->itemParticipationService->update($id,$request->participation_id);
+       return $this->participationService->index('itemParticipationRequests',$id);
     }
 
     /**

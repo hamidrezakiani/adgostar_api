@@ -17,6 +17,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('items/move-down/{id}',[ItemController::class,'moveDown']);
     Route::resource('products', 'ProductController');
     Route::resource('items', 'ItemController');
+    Route::resource('itemParticipation', 'ItemParticipationController');
     Route::resource('itemPeriods', 'ItemPeriodController');
     Route::resource('properties', 'PropertyController');
     Route::resource('participations', 'ParticipationController');

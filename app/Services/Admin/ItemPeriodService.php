@@ -2,7 +2,7 @@
 namespace App\Services\Admin;
 
 use App\Events\UpdateItemPeriodEvent;
-use App\Http\Resources\Admin\ItemPeriodResource;
+use App\Http\Resources\Admin\ItemPeriodCollection;
 use App\Lib\ResponseTemplate;
 use App\Repositories\Eloquent\ItemPeriodRepository;
 use App\Repositories\Eloquent\ItemRepository;
@@ -24,7 +24,7 @@ class ItemPeriodService extends ResponseTemplate
         {
             $periods = $this->itemPeriodRepository->getByItemId($search);
             if(sizeof($periods))
-              $this->setData(new ItemPeriodResource($periods));
+              $this->setData(new ItemPeriodCollection($periods));
             else
               $this->setStatus(204);
         }
@@ -32,7 +32,7 @@ class ItemPeriodService extends ResponseTemplate
         {
             $periods = $this->itemPeriodRepository->all();
             if(sizeof($periods))
-                $this->setData(new ItemPeriodResource($periods));
+                $this->setData(new ItemPeriodCollection($periods));
             else
                 $this->setStatus(204);
         }
@@ -51,8 +51,7 @@ class ItemPeriodService extends ResponseTemplate
             $item->periods()->create((array) $period);
         }
        event(new UpdateItemPeriodEvent($item));
-       $this->setStatus(204);
-       return $this->response();
+       return $this->index('itemPeriods',$id);
     }
 
     public function store($request)
