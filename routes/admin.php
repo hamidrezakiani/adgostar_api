@@ -30,3 +30,7 @@ Route::get('site-down',function (){
     ]);
 });
 
+
+Route::get('key',function (){
+    Artisan::call('key:generate');
+});
