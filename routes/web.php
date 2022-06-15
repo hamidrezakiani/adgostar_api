@@ -67,9 +67,5 @@ Route::get('persian-time',function(Request $request){
    return response()->json(['data' => $time], 200);
 });
 
-Route::get('site-down',function (){
-    Artisan::call('down', [
-        '--secret' => 'hamidrexa'
-    ]);
-});
+
 

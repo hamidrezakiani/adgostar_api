@@ -24,3 +24,9 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::resource('participationPeriods', 'ParticipationPeriodController');
 });
 
+Route::get('site-down',function (){
+    Artisan::call('down', [
+        '--secret' => 'hamidrexa'
+    ]);
+});
+
