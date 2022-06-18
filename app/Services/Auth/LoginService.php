@@ -53,7 +53,7 @@ class LoginService extends ResponseTemplate{
         }
         else
         {
-            $this->setErrors(['email' => ['موبایل یا پسورد اشتباه است']]);
+            $this->setErrors(['auth' => ['موبایل یا پسورد اشتباه است']]);
             $this->setStatus(401);
         }
 
