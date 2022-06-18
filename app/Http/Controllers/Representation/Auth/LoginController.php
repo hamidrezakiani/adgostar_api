@@ -40,7 +40,7 @@ class LoginController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        return response()->json(['domain' => request()->headers->get('referer')]);
         return $this->loginService->RepresentationLogin($request);
     }
 
