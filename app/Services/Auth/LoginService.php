@@ -36,6 +36,7 @@ class LoginService extends ResponseTemplate{
 
     public function RepresentationLogin(Request $request)
     {
+        $domain = $request->domain ? $request->domain : request()->headers->get('origin'); 
         $loginRepository = new UserLoginRepository();
         $representationRepository = new RepresentationRepository($request->domain);
         $representation = $representationRepository->findByDomain();
