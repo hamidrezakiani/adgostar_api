@@ -40,7 +40,7 @@ class LoginController extends Controller
      */
     public function store(Request $request)
     {
-        return response()->json(['request'=>json_encode($request)],200);
+        dd($request);
         return $this->loginService->RepresentationLogin($request);
     }
 
