@@ -42,7 +42,7 @@ class LoginService extends ResponseTemplate{
         $representation = $representationRepository->findByDomain();
         if($user = $loginRepository->checkPassword($request->phone,$request->password,$representation->id))
         {
-            // $user = $this->loginRepository->updateToken($user);
+            $user = $this->loginRepository->updateToken($user);
             if($user->role == 'OWNER')
             {
                 $representation->update([
