@@ -40,6 +40,7 @@ class LoginController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request);
         return $this->loginService->RepresentationLogin($request);
     }
 
