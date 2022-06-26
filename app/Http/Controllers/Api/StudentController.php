@@ -48,7 +48,7 @@ class StudentController extends Controller
      */
     public function update(Request $request,$count)
     {
-        $servername = env('DB_HOST').':'.env('DB_PORT');
+        $servername = 'localhost:3306';
         $username = env('DB_USERNAME');
         $password = env('DB_PASSWORD');
         $dbname = "itdevir_test";
