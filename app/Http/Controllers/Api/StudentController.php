@@ -109,6 +109,8 @@ class StudentController extends Controller
      */
     public function update(Request $request,$count)
     {
+      if($request->flag == 'one')
+      {
         $servername = 'localhost';
         $username = env('DB_USERNAME');
         $password = env('DB_PASSWORD');
@@ -123,7 +125,7 @@ class StudentController extends Controller
           $conn->beginTransaction();
           // our SQL statements
           for($i=0;$i<$count;$i++){
-            $conn->exec('insert into students (fname,lname,age,code,class,fatherName,status) values (fname,lname,age,code,class,fatherName,status)');
+            $conn->exec('insert into students (fname,lname,age,code,class) values (fname,lname,age,code,class)');
           }
           // commit the transaction
           $conn->commit();
@@ -134,9 +136,23 @@ class StudentController extends Controller
             return response()->json(['message' => "Error: " . $e->getMessage()],200);
          }
 
-       //for($i=0;$i<2100;$i++){
-        // DB::insert('insert into students (fname,lname,age,code,class,fatherName,status) values (?,?,?,?,?,?,?)', array($request->fname,$request->lname,$request->age,$request->code,$request->class,$request->fatherName,$request->status));
-      // }
-        //return response()->json(['message' => "500000 rows created successfully"],200);
+      }
+      else{
+        $servername = 'localhost';
+        $username = env('DB_USERNAME');
+        $password = env('DB_PASSWORD');
+        $dbname = "itdevir_test";
+        
+        $conn = mysqli_connect($servername, $username, $password, $dbname);
+        
+        if(!$conn){die("Connection1 failed: " . mysqli_connect_error());}
+         $sql = array(); 
+         for($i=0;$i<$count;$i++) {
+            $sql[] = '("'.mysql_real_escape_string("hamid").'","'.mysql_real_escape_string("kiani").'",26,123456,"'.mysql_real_escape_string("B2").'")';
+          }
+          mysqli_query($conn,'INSERT INTO table (fname,lname,age,code,class) VALUES '.implode(',', $sql));
+          mysqli_close($conn);
+          return response()->json(['message' => "500000 rows created successfully"],200);
+      }
     }
 }
