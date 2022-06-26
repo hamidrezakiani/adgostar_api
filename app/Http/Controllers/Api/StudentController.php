@@ -39,7 +39,7 @@ class StudentController extends Controller
         $sql='';
         
         for($i=0;$i<$request->count/5;$i++){
-          $sql.="insert into students (fname,lname,age,code,class,fatherName,status) values ('hamid','kiani',26,123456,'B1','mehran',1);";
+          $sql.="insert into students values ('hamid','kiani',26,123456,'B1');";
         }
         
         
