@@ -18,13 +18,32 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        for($i=0;$i<1600;$i++)
-        {
-           Student::create($request->all());
-        }
+        $servername = 'localhost';
+        $username = env('DB_USERNAME');
+        $password = env('DB_PASSWORD');
+        $dbname = "itdevir_test";
         
-        //$allTests = Student::all();
-        return response()->json(['message' => "500000 rows created successfully"],200);
+        $conn = mysqli_connect($servername, $username, $password, $dbname);
+        // Check connection
+        if (!$conn) {
+          die("Connection failed: " . mysqli_connect_error());
+        }
+        $sql='';
+        
+        for($i=0;$i<$request->count;$i++){
+          $sql.='insert into students (fname,lname,age,code,class,fatherName,status) values (fname,lname,age,code,class,fatherName,status)';
+        }
+
+       if(mysqli_multi_query($conn, $sql)) {
+         //echo "New records created successfully";
+       } 
+       else{
+         echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+       }
+
+       mysqli_close($conn)
+
+       return response()->json(['message' => "500000 rows created successfully"],200);
     }
     
     /**
