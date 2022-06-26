@@ -31,7 +31,7 @@ class StudentController extends Controller
         $sql='';
         
         for($i=0;$i<$request->count;$i++){
-          $sql.="insert into students (fname,lname,age,code,class,fatherName,status) values ('fname','lname','age','code','class','fatherName','status');";
+          $sql.="insert into students (fname,lname,age,code,class,fatherName,status) values ('hamid','kiani',26,123456,'B1','mehran',1);";
         }
 
        if(mysqli_multi_query($conn, $sql)) {
