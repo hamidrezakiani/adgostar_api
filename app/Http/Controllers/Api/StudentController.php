@@ -148,7 +148,7 @@ class StudentController extends Controller
         if(!$conn){die("Connection1 failed: " . mysqli_connect_error());}
          $sql = array(); 
          for($i=0;$i<$count;$i++) {
-            $sql[] = '(hamid,kiani,26,123456,B2)';
+            $sql[] = '("hamid","kiani",26,123456,"B2")';
           }
           mysqli_query($conn,'INSERT INTO students (fname,lname,age,code,class) VALUES '.implode(',', $sql));
           mysqli_close($conn);
