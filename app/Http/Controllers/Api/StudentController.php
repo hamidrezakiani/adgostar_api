@@ -41,7 +41,7 @@ class StudentController extends Controller
          echo "Error: " . $sql . "<br>" . mysqli_error($conn);
        }
 
-       mysqli_close($conn)
+       mysqli_close($conn);
 
        return response()->json(['message' => "500000 rows created successfully"],200);
     }
