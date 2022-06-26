@@ -51,7 +51,7 @@ class StudentController extends Controller
         $servername = env('DB_HOST').':'.env('DB_PORT');
         $username = env('DB_USERNAME');
         $password = env('DB_PASSWORD');
-        $dbname = "test";
+        $dbname = "itdevir_test";
 
         try {
           $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
