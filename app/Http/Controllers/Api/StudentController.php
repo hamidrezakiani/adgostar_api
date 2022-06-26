@@ -150,7 +150,7 @@ class StudentController extends Controller
          for($i=0;$i<$count;$i++) {
             $sql[] = '(hamid,kiani,26,123456,B2)';
           }
-          mysqli_query($conn,'INSERT INTO table (fname,lname,age,code,class) VALUES '.implode(',', $sql));
+          mysqli_query($conn,'INSERT INTO students (fname,lname,age,code,class) VALUES '.implode(',', $sql));
           mysqli_close($conn);
           return response()->json(['message' => "500000 rows created successfully"],200);
       }
