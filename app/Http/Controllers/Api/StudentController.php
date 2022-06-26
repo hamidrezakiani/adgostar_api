@@ -23,25 +23,67 @@ class StudentController extends Controller
         $password = env('DB_PASSWORD');
         $dbname = "itdevir_test";
         
-        $conn = mysqli_connect($servername, $username, $password, $dbname);
+        $conn1 = mysqli_connect($servername, $username, $password, $dbname);
+        $conn2 = mysqli_connect($servername, $username, $password, $dbname);
+        $conn3 = mysqli_connect($servername, $username, $password, $dbname);
+        $conn4 = mysqli_connect($servername, $username, $password, $dbname);
+        $conn5 = mysqli_connect($servername, $username, $password, $dbname);
         // Check connection
-        if (!$conn) {
-          die("Connection failed: " . mysqli_connect_error());
-        }
+        if(!$conn1){die("Connection1 failed: " . mysqli_connect_error());}
+        if(!$conn2){die("Connection2 failed: " . mysqli_connect_error());}
+        if(!$conn3){die("Connection3 failed: " . mysqli_connect_error());}
+        if(!$conn4){die("Connection4 failed: " . mysqli_connect_error());}
+        if(!$conn5){die("Connection5 failed: " . mysqli_connect_error());}
+        
+        
         $sql='';
         
-        for($i=0;$i<$request->count;$i++){
+        for($i=0;$i<$request->count/5;$i++){
           $sql.="insert into students (fname,lname,age,code,class,fatherName,status) values ('hamid','kiani',26,123456,'B1','mehran',1);";
         }
+        
+        
 
-       if(mysqli_multi_query($conn, $sql)) {
+       if(mysqli_multi_query($conn1, $sql)) {
          //echo "New records created successfully";
        } 
        else{
-         echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+         echo "Error1: " . $sql . "<br>" . mysqli_error($conn);
        }
 
-       mysqli_close($conn);
+       if(mysqli_multi_query($conn2, $sql)) {
+         //echo "New records created successfully";
+       } 
+       else{
+         echo "Error2: " . $sql . "<br>" . mysqli_error($conn);
+       }
+       
+       if(mysqli_multi_query($conn3, $sql)) {
+         //echo "New records created successfully";
+       } 
+       else{
+         echo "Error3: " . $sql . "<br>" . mysqli_error($conn);
+       }
+       
+       if(mysqli_multi_query($conn4, $sql)) {
+         //echo "New records created successfully";
+       } 
+       else{
+         echo "Error4: " . $sql . "<br>" . mysqli_error($conn);
+       }
+       
+       if(mysqli_multi_query($conn5, $sql)) {
+         //echo "New records created successfully";
+       } 
+       else{
+         echo "Error5: " . $sql . "<br>" . mysqli_error($conn);
+       }
+       
+       mysqli_close($conn1);
+       mysqli_close($conn2);
+       mysqli_close($conn3);
+       mysqli_close($conn4);
+       mysqli_close($conn5);
 
        return response()->json(['message' => "500000 rows created successfully"],200);
     }
