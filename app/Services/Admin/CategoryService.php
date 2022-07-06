@@ -83,6 +83,7 @@ class CategoryService extends ResponseTemplate
 
     public function store($request)
     {
+       $request->showParent_id = $request->parent_id;
        $category =  $this->categoryRepository->create($request->all());
        event(new CategoryCreatedEvent($category));
        $this->setStatus(200);
