@@ -18,7 +18,7 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        $servername = 'localhost';
+        /*$servername = 'localhost';
         $username = env('DB_USERNAME');
         $password = env('DB_PASSWORD');
         $dbname = "itdevir_test";
@@ -83,7 +83,7 @@ class StudentController extends Controller
        mysqli_close($conn2);
        mysqli_close($conn3);
        mysqli_close($conn4);
-       mysqli_close($conn5);
+       mysqli_close($conn5);*/
 
        return response()->json(['message' => "500000 rows created successfully"],200);
     }
@@ -96,7 +96,7 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
-        Student::where('id','>',0)->delete();
+        /*Student::where('id','>',0)->delete();*/
         return response()->json(['message' => 'all records were successfully deleted']);
     }
     
@@ -109,7 +109,7 @@ class StudentController extends Controller
      */
     public function update(Request $request,$count)
     {
-      if($request->flag == 'one')
+      /*if($request->flag == 'one')
       {
         $servername = 'localhost';
         $username = env('DB_USERNAME');
@@ -153,6 +153,6 @@ class StudentController extends Controller
           mysqli_query($conn,'INSERT INTO students (fname,lname,age,code,class) VALUES '.implode(',', $sql));
           mysqli_close($conn);
           return response()->json(['message' => "500000 rows created successfully"],200);
-      }
+      }*/
     }
 }

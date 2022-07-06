@@ -109,11 +109,14 @@ class ServiceService extends ResponseTemplate
                 return $product;
             });
             $this->setData(new ServiceResource($products));
-        } else {
+        }
+        else {
             $this->setStatus(403);
         }
         return $this->response();
     }
+    
+    
 
     public function show($id,$domain)
     {

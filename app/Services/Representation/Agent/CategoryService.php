@@ -2,6 +2,7 @@
 namespace App\Services\Representation\Agent;
 
 use App\Http\Resources\Representation\Agent\CategoryResource;
+use App\Http\Resources\Representation\CategoryCollection;
 use App\Lib\ResponseTemplate;
 use App\Repositories\Eloquent\CategoryRepository;
 use App\Repositories\Eloquent\ProductRepository;
@@ -32,6 +33,14 @@ class CategoryService extends ResponseTemplate
             $pageRoute = $this->routePage($category);
             $this->setData($pageRoute);
         }
+        elseif($flag == 'nested')
+        {
+          $showParents = $this->categoryRepository->showParents('all');
+          foreach ($showParents as $cat){
+            $cat->subCats = $this->nestedCategories($cat->id);
+          }
+          $this->setData(new CategoryCollection($showParents));
+        }
         else
         {
             $this->setStatus(403);
@@ -39,7 +48,16 @@ class CategoryService extends ResponseTemplate
         }
         return $this->response();
     }
-
+    public function nestedCategories($categoryId)
+    {
+       $subCats = $this->categoryRepository->showSubCats($categoryId,'all');
+       foreach ($subCats as $cat){
+         $cat->subCats = $this->nestedCategories($cat->id);
+       }
+       
+       return $subCats;
+       
+    }
     public function routePage($parent)
     {
         if ($parent)

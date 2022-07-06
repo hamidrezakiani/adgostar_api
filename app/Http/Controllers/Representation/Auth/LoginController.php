@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Representation\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Services\Auth\LoginService;
+use App\Http\Requests\Representation\LoginRequest;
 use Illuminate\Http\Request;
 
 class LoginController extends Controller
@@ -38,7 +39,7 @@ class LoginController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(LoginRequest $request)
     {
         return $this->loginService->RepresentationLogin($request);
     }
