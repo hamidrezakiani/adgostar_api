@@ -17,7 +17,7 @@ class CategoryResource extends JsonResource
         return [
           'id' => $this->id,
           'name' => $this->label,
-          'subCayegories' => new CategoryCollection($this->subCats),
+          'subCategories' => new CategoryCollection($this->subCats),
         ];
     }
 }
