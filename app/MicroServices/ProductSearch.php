@@ -32,7 +32,7 @@ class ProductSearch
      $products = collect([]);
      foreach ($subCats as $category)
      {
-        $products = $products->concat($this->searchByCat($category->id));
+        $products = $products->concat($this->searchByCatId($category->id));
      }
      
      return $products;
