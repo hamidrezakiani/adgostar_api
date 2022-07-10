@@ -18,7 +18,7 @@ class ItemResource extends JsonResource
         return [
           'id'            => $this->id,
           'product_id'    => $this->product_id,
-          'label'         => $this->label,
+          'label'         => $this->alias,
           'product_label' => $this->product->label,
           'properties'    => new PropertyCollection($this->product->properties()->with('type')->get()),
           'maxOrder'      => $this->maxOrder > 1000000000 ? null : $this->maxOrder,

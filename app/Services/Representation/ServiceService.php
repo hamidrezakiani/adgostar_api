@@ -72,8 +72,8 @@ class ServiceService extends ResponseTemplate
       
       $domain = $request->domain;
       $products = $products->map(function($product)use($domain){
-          $product->items = $product->items()->readyService()->get();
-          $product->items = $product->items->map(function($item)use($domain){
+          $product->itemsa = $product->items()->readyService()->get();
+          $product->itemsa = $product->itemsa->map(function($item)use($domain){
              $item->periods = $this->itemPeriods($item->id,$domain);
              $item->maxOrder = $this->participationPeriodRepository->maxOrder($item->id);
              return $item;
