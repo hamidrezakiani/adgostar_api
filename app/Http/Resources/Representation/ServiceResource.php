@@ -38,7 +38,7 @@ class ServiceResource extends JsonResource
         return [
           'id'    => $this->id,
           'label' => $this->label,
-          'items' => new ItemCollection($this->itemsa),
+          'items' => new ItemCollection($this->items),
         ];
     }
 
