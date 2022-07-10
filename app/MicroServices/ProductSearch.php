@@ -26,7 +26,7 @@ class ProductSearch
   {
      $category = $this->categoryRepository->find($cat_id);
      if(!$category)
-       return [];
+       return collect([]);
        
      if($category->count_subCat == 0)
        return $this->productRepository->getViewableByCategory($cat_id,$this->scope);
