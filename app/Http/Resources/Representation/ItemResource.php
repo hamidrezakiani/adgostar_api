@@ -15,36 +15,16 @@ class ItemResource extends JsonResource
      */
     public function toArray($request)
     {
-        $this->periods = $this->periods->map(function($period){
-            $temp['startLabel'] = $period->itemPeriod->start;
-            $temp['endLabel'] = $period->itemPeriod->end;
-            $temp['startLabel'] = $this->periodFormat($period->itemPeriod->start);
-            $temp['endLabel'] = ($period->itemPeriod->end < 1000000000000) ? $this->periodFormat($period->itemPeriod->end) : 'بی نهایت';
-            $temp['start'] = $period->itemPeriod->start;
-            $temp['end'] = $period->itemPeriod->end;
-            $temp['cost'] = $period->cost;
-            $temp['time'] = $period->itemPeriod->time;
-            return $temp;
-        });
-        $this->maxOrderLabel = ($this->maxOrder < 1000000000000) ? $this->periodFormat($this->maxOrder) : 'بی نهایت';
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'product' => $this->product,
-            'properties' => $this->product->properties()->with('type')->get(),
-            'maxOrder' => $this->maxOrder,
-            'maxOrderLabel' => $this->maxOrderLabel,
-            'periods' => $this->periods
+          'id'            => $this->id,
+          'product_id'    => $this->product_id,
+          'label'         => $this->label,
+          'product_label' => $this->product->label,
+          'properties'    => new PropertyCollection($this->product->properties()->with('type')->get()),
+          'maxOrder'      => $this->maxOrder > 1000000000 ? null : $this->maxOrder,
+          'maxOrderLabel' => $this->maxOrder > 1000000000 ? null : (new PeriodResource($this->periods[0]))->periodFormat($this->maxOrder),
+          'periods'       => new PeriodCollection($this->periods),
         ];
     }
 
-    public function periodFormat($count)
-    {
-        if ($count > 999999 && $count != NULL) {
-            $count = round($count / 1000000, 1) . "M";
-        } elseif ($count > 999 && $count != NULL) {
-            $count = round($count / 1000, 1) . "K";
-        }
-        return $count;
-    }
 }

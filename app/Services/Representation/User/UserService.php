@@ -3,7 +3,6 @@
 namespace App\Services\Representation\User;
 
 use App\Events\FastUserEvent;
-use App\Http\Resources\Representation\ItemResource;
 use App\Http\Resources\Representation\ServiceResource;
 use App\Http\Resources\Representation\User\UserResource;
 use App\Lib\ResponseTemplate;

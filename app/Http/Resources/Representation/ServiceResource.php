@@ -3,9 +3,9 @@
 namespace App\Http\Resources\Representation;
 
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class ServiceResource extends ResourceCollection
+class ServiceResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,7 +15,7 @@ class ServiceResource extends ResourceCollection
      */
     public function toArray($request)
     {
-        $response['services'] = $this->collection->map(function($product){
+        /*$response['services'] = $this->collection->map(function($product){
            $product->items = $product->items->map(function($item){
              $item->periods = $item->periods->map(function($period){
                     $temp['startLabel'] = $period->itemPeriod->start;
@@ -33,7 +33,13 @@ class ServiceResource extends ResourceCollection
            });
            return $product;
         });
-        return $response;
+        return $response;*/
+        
+        return [
+          'id'    => $this->id,
+          'label' => $this->label,
+          'items' => new ItemCollection($this->items),
+        ];
     }
 
     public function periodFormat($count)

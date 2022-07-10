@@ -4,49 +4,31 @@ namespace App\Services\Representation;
 
 use App\Http\Resources\Representation\ItemResource;
 use App\Http\Resources\Representation\ServiceResource;
+use App\Http\Resources\Representation\ServiceCollection;
 use App\Lib\ResponseTemplate;
-use App\Repositories\Eloquent\CategoryRepository;
 use App\Repositories\Eloquent\ItemRepository;
 use App\Repositories\Eloquent\ParticipationPeriodRepository;
-use App\Repositories\Eloquent\ProductRepository;
 use App\Repositories\Eloquent\RepresentationItemPeriodRepository;
 use App\Repositories\Eloquent\RepresentationRepository;
+use App\MicroServices\ProductSearch;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
 class ServiceService extends ResponseTemplate
 {
-    protected $productRepository;
     protected $itemRepository;
-    protected $categoryRepository;
     protected $representationRepository;
     protected $participationPeriodRepository;
     protected $representationItemPeriodRepository;
-
+    protected $productSearch;
     public function __construct($domain)
     {
-        $this->productRepository = new ProductRepository();
         $this->itemRepository = new ItemRepository();
-        $this->categoryRepository = new CategoryRepository();
         $this->representationItemPeriodRepository = new RepresentationItemPeriodRepository();
         $this->participationPeriodRepository = new ParticipationPeriodRepository();
         $this->representationRepository = new RepresentationRepository($domain);
         $this->representation = $this->representationRepository->findByDomain();
-    }
-
-    public function getAllCategoryViewableProduct($category_id)
-    {
-        $category = $this->categoryRepository->find($category_id);
-        if ($category->count_subCat == 0) {
-            return $this->productRepository->getViewableByCategory($category_id, 'readyService');
-        } else {
-            $subCats = $this->categoryRepository->showSubCats($category_id);
-            $products = collect([]);
-            foreach ($subCats as $category) {
-                $products = $products->concat($this->getAllCategoryViewableProduct($category->id));
-            }
-            return $products;
-        }
+        $this->productSearch = new ProductSearch();
     }
 
     public function baseCost($itemPeriod, $representation)
@@ -61,9 +43,10 @@ class ServiceService extends ResponseTemplate
                         $this->baseCost($itemPeriod, $representation->parent));
                 }
             }
-            return $this->participationPeriodRepository
-                ->matchPeriod($itemPeriod->item_id, $itemPeriod->start, $itemPeriod->end)
-                ->cost;
+      $matchPeriod = $this->participationPeriodRepository
+                ->matchPeriod($itemPeriod->item_id, $itemPeriod->start, $itemPeriod->end);     
+      
+        return $matchPeriod->cost;
     }
 
     public function itemPeriods($item_id,$domain)
@@ -80,50 +63,35 @@ class ServiceService extends ResponseTemplate
         return $rPeriods;
     }
 
-    public function index($flag = NULL,$domain,$category_id = NULL)
+    public function index($request)
     {
-        if ($flag == 'categoryServices') {
-            $products = $this->getAllCategoryViewableProduct($category_id);
-            $products = $products->map(function($product)use($domain){
-              $product->items = $product->items()->readyService()->get();
-              $product->items = $product->items->map(function($item)use($domain){
-                 $item->periods = $this->itemPeriods($item->id,$domain);
-                 $item->maxOrder = $this->participationPeriodRepository->maxOrder($item->id);
-                 return $item;
-              });
-              return $product;
-            });
-            $this->setData(new ServiceResource($products));
-        } elseif ($flag == 'all') {
-            $showParents = $this->categoryRepository->showParents();
-            $products = collect([]);
-            foreach ($showParents as $category) {
-                $products = $products->concat($this->getAllCategoryViewableProduct($category->id));
-            }
-            $products = $products->map(function ($product) use ($domain) {
-                $product->items = $product->items->map(function ($item) use ($domain) {
-                    $item->periods = $this->itemPeriods($item->id, $domain);
-                    $item->maxOrder = $this->participationPeriodRepository->maxOrder($item->id);
-                    return $item;
-                });
-                return $product;
-            });
-            $this->setData(new ServiceResource($products));
-        }
-        else {
-            $this->setStatus(403);
-        }
-        return $this->response();
+      if($request->cat_id)
+        $products = $this->productSearch->readyService()->searchByCatId($request->cat_id);
+      else
+        $products = $this->productSearch->readyService()->all();
+      
+      $domain = $request->domain;
+      $products = $products->map(function($product)use($domain){
+          $product->items = $product->items()->readyService()->get();
+          $product->items = $product->items->map(function($item)use($domain){
+             $item->periods = $this->itemPeriods($item->id,$domain);
+             $item->maxOrder = $this->participationPeriodRepository->maxOrder($item->id);
+             return $item;
+          });
+          return $product;
+      });
+      
+      $this->setData(new ServiceCollection($products));
+      return $this->response();
     }
     
-    
 
-    public function show($id,$domain)
+    /*public function show($id,$domain)
     {
        $item = $this->itemRepository->find($id);
        $item->periods = $this->itemPeriods($item->id, $domain);
        $item->maxOrder = $this->participationPeriodRepository->maxOrder($item->id);
        $this->setData(new ItemResource($item));
         return $this->response();
-    }
+    }*/
 }

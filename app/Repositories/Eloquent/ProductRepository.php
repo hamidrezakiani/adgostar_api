@@ -32,6 +32,11 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
 
     }
     
+    public function getReadyServices()
+    {
+       return $this->model->readyService()->get();
+    }
+    
     public function previous($id)
     {
       $product = $this->model->find($id);
