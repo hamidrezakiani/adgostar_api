@@ -25,6 +25,9 @@ class ProductSearch
   public function searchByCatId($cat_id)
   {
      $category = $this->categoryRepository->find($cat_id);
+     if(!$category)
+       return [];
+       
      if($category->count_subCat == 0)
        return $this->productRepository->getViewableByCategory($cat_id,$this->scope);
      
