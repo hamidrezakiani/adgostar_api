@@ -86,12 +86,12 @@ class ServiceService extends ResponseTemplate
     }
     
 
-    /*public function show($id,$domain)
+    public function show($id,$domain)
     {
        $item = $this->itemRepository->find($id);
        $item->periods = $this->itemPeriods($item->id, $domain);
        $item->maxOrder = $this->participationPeriodRepository->maxOrder($item->id);
        $this->setData(new ItemResource($item));
         return $this->response();
-    }*/
+    }
 }
