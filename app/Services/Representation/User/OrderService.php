@@ -80,7 +80,7 @@ class OrderService extends ResponseTemplate
     {
        if(auth('user')->check())
        {
-            $user = auth('user');
+            $user = auth('user')->user();
        }
        else
        {
